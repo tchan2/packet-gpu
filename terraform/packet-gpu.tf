@@ -14,7 +14,7 @@ locals {
 resource "packet_device" "tf-gpu" {
     hostname            = "gpu-testing"
     plan                = "g2.large.x86"
-    facilities            = ["dfw2"]
+    facilities          = ["dfw2"]
     operating_system    = "ubuntu_16_04"
     billing_cycle       = "hourly"
     project_id          = "${local.project_id}"
@@ -22,7 +22,7 @@ resource "packet_device" "tf-gpu" {
 
 resource "docker_container" "ubuntu" {
     name = "gpu-container"
-    image = ""
+    image = "nvcr.io/nvidia/tensorflow:latest-gpu"
     start = true
 
 }

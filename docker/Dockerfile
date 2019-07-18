@@ -1,5 +1,5 @@
 # Parent image
-FROM baseImage
+FROM nvcr.io/nvidia/tensorflow:latest-gpu
 
 # Working directory
 WORKDIR /docker
@@ -9,12 +9,11 @@ COPY . /docker
 
 # Install needed packages specified in requirements.txt
 RUN apt-get update && apt-get install -q -y \
-build essential \
 wget -O - -q 'https://gist.githubusercontent.com/dte/8954e405590a360614dcc6acdb7baa74/raw/d1b5a01ed0b9252654016d2a9a435dc8b4c045e7/install-CUDA-docker-nvidia-docker.sh' | sudo bash \
 shutdown -r now
 
-# Check that the container can see the GPU
-RUN nvidia-smi\
+# Check that GPU has been installed and that Docker can see it
+RUN nvidia-smi \
 sudo nvidia-docker-plugin & \
 sudo nvidia-docker run --rm nvidia/cuda nvidia-smi
 
