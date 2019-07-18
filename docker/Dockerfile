@@ -9,8 +9,8 @@ COPY . /docker
 
 # Install needed packages specified in requirements.txt
 RUN apt-get update && apt-get install -q -y \
-wget -O - -q 'https://gist.githubusercontent.com/dte/8954e405590a360614dcc6acdb7baa74/raw/d1b5a01ed0b9252654016d2a9a435dc8b4c045e7/install-CUDA-docker-nvidia-docker.sh' | sudo bash \
-shutdown -r now
+RUN wget -O - -q 'https://gist.githubusercontent.com/dte/8954e405590a360614dcc6acdb7baa74/raw/d1b5a01ed0b9252654016d2a9a435dc8b4c045e7/install-CUDA-docker-nvidia-docker.sh' | sudo bash \
+RUN shutdown -r now
 
 # Check that GPU has been installed and that Docker can see it
 RUN nvidia-smi \

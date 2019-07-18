@@ -1,4 +1,5 @@
 variable "auth_token" {}
+# variable "project_id" {}
 
 provider "docker" {}
 
@@ -18,6 +19,7 @@ resource "packet_device" "tf-gpu" {
     operating_system    = "ubuntu_16_04"
     billing_cycle       = "hourly"
     project_id          = "${local.project_id}"
+    # project_id          = "${var.project_id}"
 }
 
 resource "docker_container" "ubuntu" {
