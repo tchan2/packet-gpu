@@ -27,9 +27,8 @@ resource "packet_device" "tf-gpu" {
     # project_id          = "${var.project_id}"
 }
 
-resource "docker_container" "ubuntu" {
-    name = "gpu-container"
-    image = "nvcr.io/nvidia/tensorflow:latest-gpu"
-    start = true
-
-}
+# resource "docker_container" "ubuntu" {
+#     name = "gpu-container"
+#     image = "nvcr.io/nvidia/tensorflow:latest-gpu"
+#     start = true
+# }
