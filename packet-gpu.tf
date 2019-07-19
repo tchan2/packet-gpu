@@ -1,26 +1,35 @@
-# All variables used here can be changed in the `variables.tf` file.
+variable "auth_token" {}
+# variable "project_id" {}
 
-provider "packet" {
-    auth_token = "${var.auth_token}"
-    # Please set your authentication token in `variables.tf` before running Terraform
+locals {
+    project_id = "a8a360a5-f0a4-45cf-a61b-e90a682efe3e"
+    # UUID of your project
 }
 
-resource "packet_project" "tf_project" {
-    name = "Project 1"
-    # If you do not need to create a project, please set your project_id in `variables.tf` before running Terraform
+# References a file with script of necessary installations after server is created
+data "template_file" "tf_userdata" {
+    template = "${file("tf_userdata.sh.tpl")}"
+}
+
+# Create a Packet server with GPU support
+provider "packet" {
+    auth_token = "${var.auth_token}"
 }
 
 resource "packet_device" "tf-gpu" {
-    hostname            = "${var.hostname}"
-    plan                = "${var.plan}"
-    facilities          = ["${var.facility}"]
-    operating_system    = "${var.os}"
-    billing_cycle       = "${var.billing_cycle}"
-    project_id          = "${var.project_id}"
+    hostname            = "gpu-testing"
+    plan                = "g2.large.x86"
+    facilities          = ["dfw2"]
+    operating_system    = "ubuntu_16_04"
+    billing_cycle       = "hourly"
+    project_id          = "${local.project_id}"
     user_data           = "${data.template_file.tf_userdata.rendered}"
+    # project_id          = "${var.project_id}"
 }
 
-# References a file with script of necessary installations after server is created.
-data "template_file" "tf_userdata" {
-    template = "${file("${var.script}")}"
+resource "docker_container" "ubuntu" {
+    name = "gpu-container"
+    image = "nvcr.io/nvidia/tensorflow:latest-gpu"
+    start = true
+
 }
