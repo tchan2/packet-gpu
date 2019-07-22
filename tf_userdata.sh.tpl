@@ -51,13 +51,11 @@ nvidia-docker
 echo "Checking for nvidia drivers..."
 nvidia-smi
 
-{* echo "Test nvidia-smi with latest CUDA image" *}
-{* sudo systemctl daemon-reload
-sudo systemctl restart docker *}
-{* docker run --runtime=nvidia --rm nvidia/cuda:10.1-base nvidia-smi *}
-{* above code is causing errors *}
+echo "Test if Tensorflow can see the GPU..."
+docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
 
 echo "Download finished."
+echo "Running Jupyter Notebook with GPU support..."
 
 {* echo "Rebooting server..."
 sudo shutdown -r now *}
