@@ -12,7 +12,7 @@ Usage: terraform [-version] [-help] <command> [args]
 (...)
 ```
 
-<i> For further help on installing Terraform on your operating system, please visit https://learn.hashicorp.com/terraform/getting-started/install.html. </i>
+<i> For further help on installing Terraform on your operating system, please visit Terraform's [Getting Started](https://learn.hashicorp.com/terraform/getting-started/install.html). </i>
 
 ## Clone the Repository
 Clone this repository to have all the necessary files needed to easily deploy a server with GPU support.
@@ -64,7 +64,46 @@ If everything looks good, we can start deploying our Packet server. Run the foll
 $ terraform apply
 ```
 
-Once this command has performed, please insert your authentication token (and project ID, if prompted) accordingly.
+Once this command has performed, please insert your authentication token (or your API key) and if prompted, your project ID accordingly.
 
 If all the steps have been completed successfully, a Packet server will have been deployed!
 
+## Enter Your Server
+Open up a terminal, and SSH into your device. You may do this by entering:
+```
+ssh -L 8888:localhost:8888 root@PUBLIC_IPv4_ADDRESS
+```
+
+The IP address of your server can be found by logging into your Packet account and checking there, or by searching the `terraform.tfstate` file that has just been created after running `terraform apply`. 
+
+Once there, please create a passphrase to secure your server.
+
+## Install Tensorflow
+Finally, we are now able to use our Packet server to open up Jupyter and use it for machine learning!
+
+Run the following command* to create a separate environment in Conda. Name it however you like.
+```
+$ conda create --name your_env_name python=3.7
+```
+<i>*<b>Reminder</b>: If the command does not work, it may be due to the fact that the script being run in your server has not finished yet. Please wait a couple of minutes after your server has been deployed before trying again. </i>
+
+
+Now, activate this environment.
+```
+$ conda activate your_env_name
+```
+
+Install Tensorflow-GPU and Jupyter.
+```
+$ pip install tensorflow-gpu
+$ pip install jupyter
+```
+
+Now, you are ready to run your Jupyter notebook!
+```
+$ jupyter notebook --allow-root
+```
+
+Once this runs, you will see a link that you can enter into your browser to access your Jupyter notebook!
+
+Happy coding!

@@ -22,13 +22,7 @@ resource "packet_device" "tf-gpu" {
     facilities          = ["dfw2"]
     operating_system    = "ubuntu_16_04"
     billing_cycle       = "hourly"
+    # project_id          = "${var.project_id}"
     project_id          = "${local.project_id}"
     user_data           = "${data.template_file.tf_userdata.rendered}"
-    # project_id          = "${var.project_id}"
 }
-
-# resource "docker_container" "ubuntu" {
-#     name = "gpu-container"
-#     image = "nvcr.io/nvidia/tensorflow:latest-gpu"
-#     start = true
-# }
