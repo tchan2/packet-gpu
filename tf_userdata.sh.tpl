@@ -1,15 +1,13 @@
 #!/bin/bash -v
-{* echo "Create new user"
-adduser new *}
 echo "Running script and downloading essentials.."
 sudo apt-get update 
 sudo apt-get install -y  build-essential
 sudo apt-get install -y linux-headers-$(uname -r)
 
-echo "Downloading Conda and Pip..."
+echo "Downloading Conda"
 cd /tmp
 curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
-sha256sum Anaconda3-2019.03-Linux-x86_64.sh
+sha256sum Anaconda3-2019.03-Linux-x86_64.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
 yes "yes"| bash Anaconda3-2019.03-Linux-x86_64.sh
 echo -en "\n"
 
@@ -65,6 +63,8 @@ nvidia-smi
 
 echo "Test if Tensorflow can see the GPU..."
 docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
+
+source ~/.bashrc
 
 echo "Completed. Script finished."
 
