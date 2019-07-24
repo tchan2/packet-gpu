@@ -6,7 +6,7 @@ variable "auth_token" {
 
 variable "project_id" {
     description = "The UUID of your project, that was either created through the Packet Portal, or in your Terraform file."
-    default = "${packet_project.tf_project.id}"
+    default = " "
     # Please replace the above with your project ID if you have already created it through the Packet Portal.
 }
 
