@@ -64,7 +64,5 @@ nvidia-smi
 echo "Test if Tensorflow can see the GPU..."
 docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
 
-source ~/.bashrc
-
 echo "Completed. Script finished."
 
