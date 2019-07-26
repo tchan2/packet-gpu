@@ -177,7 +177,8 @@ Copyright (c) 2005-2019 NVIDIA Corporation
 (...)
 
 $ nvidia-smi
-Mon Jan 01 01:01:01 2019  // Should show your own timestamp here      +-----------------------------------------------------------------------------+
+Mon Jan 01 01:01:01 2019  // Should show your own timestamp here
++-----------------------------------------------------------------------------+
 | NVIDIA-SMI 418.67       Driver Version: 418.67       CUDA Version: 10.1     |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
