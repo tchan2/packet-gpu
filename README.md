@@ -57,7 +57,7 @@ variable "auth_token" {
 Please skip to the [Create a Project](#create-a-project) section of this page.
 
 #### If you already have a project...
-If you have already created a project in your Packet account and would like to use it, enter your project ID in the `default` field. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
+If you have already created a project in your Packet account and would like to use it, enter your project ID in the `default` field and uncomment it. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
 
 ```
 variable "project_id" {

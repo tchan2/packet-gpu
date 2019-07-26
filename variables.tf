@@ -4,10 +4,15 @@ variable "auth_token" {
     # Please set your authentication token in `default` before running Terraform
 }
 
+variable "have_proj_id" {
+    description = "Set this value to "
+    default = false
+}
+
 variable "project_id" {
     description = "The UUID of your project, that was either created through the Packet Portal, or in your Terraform file."
     default = " "
-    # Please replace the above with your project ID if you have already created it through the Packet Portal.
+    # Please uncomment and enter your project ID in the `default` field if you have already created a project through the Packet Portal.
 }
 
 variable "hostname" {

@@ -7,14 +7,16 @@ provider "packet" {
 
 resource "packet_project" "tf_project" {
     name = "Project 1"
+    count = "${var.have_proj_id == false ? 1:0}"
     # If you do not need to create a project, please set your project_id in `variables.tf` before running
     # Terraform and delete or comment out this resource so a new project will not be created.
 }
 
 resource "packet_device" "tf-gpu" {
-    # If you already have a project_id, please change project_id to:
+    # If you already have a project_id, please add the ID to `variables.tf` and make these changes:
     # project_id          = "${var.project_id}"
     project_id          = "${packet_project.tf_project.id}"
+
     hostname            = "${var.hostname}"
     plan                = "${var.plan}"
     facilities          = ["${var.facility}"]
