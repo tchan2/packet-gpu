@@ -7,7 +7,8 @@ provider "packet" {
 
 resource "packet_project" "tf_project" {
     name = "Project 1"
-    # If you do not need to create a project, please set your project_id in `variables.tf` before running Terraform
+    # If you do not need to create a project, please set your project_id in `variables.tf` before running
+    # Terraform and delete or comment out this resource so a new project will not be created.
 }
 
 resource "packet_device" "tf-gpu" {

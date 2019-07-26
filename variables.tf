@@ -34,8 +34,3 @@ variable "billing_cycle" {
     description = "How often you will be billed for this server. You will be billed hourly."
     default = "hourly"
 }
-
-variable "script" {
-    description = "The script to run necessary installations to create a machine learning environment."
-    default = "tf_userdata.sh.tpl"
-}

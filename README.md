@@ -45,7 +45,7 @@ After cloning the repository, enter the `packet-gpu` directory and go into the `
 You will see that variables `auth_token` and `project_id` have been left blank.
 
 ### `auth_token`
-Please enter your API key in the quotes indicated in the `default` portion. If you do not, Terraform will give an error stating that you do not have the correct authentication token needed to create this server.
+Please enter your API key in the quotes indicated in the `default` field. If you do not, Terraform will give an error stating that you do not have the correct authentication token needed to create this server.
 ```
 variable "auth_token" {
     (...)
@@ -54,10 +54,10 @@ variable "auth_token" {
 ```
 ### `project_id`
 #### If you do not have a project...
-Please continue into the [Create a Project](#create-a-project) section of this page.
+Please skip to the [Create a Project](#create-a-project) section of this page.
 
 #### If you already have a project...
-If you have already created a project in your Packet account and would like to use it, enter your project ID in the `default` portion. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
+If you have already created a project in your Packet account and would like to use it, enter your project ID in the `default` field. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
 
 ```
 variable "project_id" {
@@ -72,8 +72,9 @@ Now go into the `packet-gpu.tf` file, and comment out or delete the following:
 #     name = "Project 1"
 # }
 ```
+> <i> Please make sure to do the above step or it will create an empty project!</i>
 
-and change the `project_id` section of the device creating portion from `"${packet_project.tf_project.id}"` to `"${var.project_id}"`:
+Then, change the `project_id` field of the device creating section from `"${packet_project.tf_project.id}"` to `"${var.project_id}"`:
 ```
 resource "packet_device" "tf-gpu" {
     project_id            = "${var.project_id}"
@@ -82,7 +83,7 @@ resource "packet_device" "tf-gpu" {
 (...)
 ```
 
-You may now continue to the [Initialize Terraform](#initialize-terraform) section of this page.
+You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page.
 
 ## Create a Project 
 If you do not already have a project created in Packet, please go to the `packet-gpu.tf` file, and look for the following code:
@@ -94,14 +95,13 @@ resource "packet_project" "your_project_name" {
 ```
 Your project name has been defaulted to `tf_project` and the name has been defaulted to `Project 1`, but you may edit it accordingly.
 
-If you have changed the project name, please also adjust the following code accordingly: 
+If you have changed the project name, please also adjust the following code accordingly to fit your project name: 
 ```
 resource "packet_device" "tf-gpu" {
     (...)
     project_id = "${packet_project.your_project_name.id}"
 }
 ```
-
 ><i> Please visit the section on [packet_project](https://www.terraform.io/docs/providers/packet/r/project.html) on the Terraform Packet Provider page for more information. </i>
 
 ## Initialize Terraform
@@ -151,10 +151,10 @@ Once you see
 echo "Completed. Script finished."
 Completed. Script finished.
 ```
-at the bottom of this script, the script has been completed.
+at the bottom of the `cloud-init-output` log, the script has been completed.
 
 ## Check Your Installations
-To ensure that all installations have been completed successfully, we must run the following the initialize our session after entering our server:
+To ensure that all installations have been completed successfully, we must run the following to initialize our session after entering our server:
 ```
 $ source ~/.bashrc
 ```
@@ -193,7 +193,7 @@ Mon Jan 01 01:01:01 2019  // Should show your own timestamp here
 ## Install Tensorflow
 Finally, we are now able to use our Packet server to open up Jupyter and use it for machine learning!
 
-Run the following command* to create a separate environment in Conda. Name it however you like.
+Run the following command to create a separate environment in Conda. Name it however you like.
 ```
 $ conda create --name your_env_name python=3.7
 ```
