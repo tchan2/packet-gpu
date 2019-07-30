@@ -1,4 +1,6 @@
-#!/bin/bash -v
+#!/bin/bash -x
+(exec | tee stdout.log) 3>&1 1>&2 2>&3 | tee stderr.log
+
 echo "Running script and downloading essentials.."
 sudo apt-get update 
 sudo apt-get install -y  build-essential
@@ -59,12 +61,14 @@ nvcc -V
 
 echo "Unloading unnecessary drivers..."
 sudo rmmod nvidia_drm nvidia_modeset nvidia_uvm nvidia
+sudo lsof /dev/nvidia*
 nvidia-smi
 
 echo "Test if Tensorflow can see the GPU..."
 docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
 
-echo "Run script"
-wget -O - https://raw.githubusercontent.com/tchan2/packet-gpu/master/postinstall.sh | bash
+echo "Clone the repository"
+git clone https://github.com/tchan2/packet-gpu/
+
 echo "Completed. Script finished."
 
