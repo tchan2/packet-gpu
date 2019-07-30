@@ -195,18 +195,19 @@ Finally, we are now able to use our Packet server to open up Jupyter and use it 
 
 Run the following command to create a separate environment in Conda. Name it however you like.
 ```
-$ conda create --name your_env_name python=3.7
+$ conda create --name juypter_env python=3.7
 ```
 
 Now, activate this environment.
 ```
-$ conda activate your_env_name
+$ conda activate juypter_env
 ```
 
 Install Tensorflow-GPU and Jupyter.
 ```
 $ pip install tensorflow-gpu
 $ pip install jupyter
+$ pip install keras
 ```
 
 Now, you are ready to run your Jupyter notebook!
