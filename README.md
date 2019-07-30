@@ -57,7 +57,7 @@ variable "auth_token" {
 ```
 ### `project_id`
 #### If you do not have a project...
-Please skip to the [Create a Project](#create-a-project) section of this page.
+> <b> Please skip to the [Create a Project](#create-a-project) section of this page. </b>
 
 #### If you already have a project...
 If you have already created a project in your Packet account and would like to use it, first change the value of `have_proj_id` to `true`. It has been defaulted to `false`.
@@ -89,7 +89,7 @@ resource "packet_device" "tf-gpu" {
 (...)
 ```
 
-You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page.
+> You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page.
 
 
 ## Create a Project 
