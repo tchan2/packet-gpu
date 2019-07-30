@@ -7,11 +7,9 @@ sudo apt-get install -y  build-essential
 sudo apt-get install -y linux-headers-$(uname -r)
 
 echo "Downloading Conda"
-cd /tmp
-curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
-sha256sum Anaconda3-2019.03-Linux-x86_64.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
-yes "yes"| bash Anaconda3-2019.03-Linux-x86_64.sh
-echo -en "\n"
+wget -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
+sha256sum anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
+bash anaconda.sh -b -p $HOME/anaconda
 
 source ~/.bashrc
 
@@ -66,9 +64,6 @@ nvidia-smi
 
 echo "Test if Tensorflow can see the GPU..."
 docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
-
-echo "Clone the repository"
-git clone https://github.com/tchan2/packet-gpu/
 
 echo "Completed. Script finished."
 

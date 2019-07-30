@@ -147,7 +147,7 @@ The IP address of your server can be found by logging into your Packet account a
 Once there, please create a passphrase to secure your server.
 
 
-## Check The Script
+## Check the Script
 In order to use the packages and installations in this server, it will be required that the script running in the server's user data has been completed.
 
 To check the progress of this script, please run:
@@ -163,6 +163,23 @@ echo "Completed. Script finished."
 Completed. Script finished.
 ```
 at the bottom of the `cloud-init-output` log, the script has been completed.
+
+
+## Create Jupyter Notebook
+<!-- WORK IN PROGRESS -->
+To create a Jupyter notebook and run it in a Conda environment all in one, run these commands: 
+
+```
+$ wget -O https://raw.githubusercontent.com/tchan2/packet-gpu/master/postinstall.sh
+
+$ chmod +x postinstall.sh
+
+$ ./postinstall.sh
+```
+
+This will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment, and create a Jupyter notebook!
+
+<!-- WORK IN PROGRESS -->
 
 Once this runs, you will see a link that you can enter into your browser to access your Jupyter notebook!
 
