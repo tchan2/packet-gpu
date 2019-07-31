@@ -146,6 +146,10 @@ The IP address of your server can be found by logging into your Packet account a
 
 Once there, please create a passphrase to secure your server.
 
+Now, enter into your user account!
+```
+$ su - user
+```
 
 ## Check the Script
 In order to use the packages and installations in this server, it will be required that the script running in the server's user data has been completed.
@@ -166,11 +170,10 @@ at the bottom of the `cloud-init-output` log, the script has been completed.
 
 
 ## Create Jupyter Notebook
-<!-- WORK IN PROGRESS -->
 To create a Jupyter notebook and run it in a Conda environment all in one, run these commands: 
 
 ```
-$ wget -O https://raw.githubusercontent.com/tchan2/packet-gpu/master/postinstall.sh
+$ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/postinstall.sh
 
 $ chmod +x postinstall.sh
 
@@ -179,71 +182,13 @@ $ ./postinstall.sh
 
 This will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment, and create a Jupyter notebook!
 
-<!-- WORK IN PROGRESS -->
-
-Once this runs, you will see a link that you can enter into your browser to access your Jupyter notebook!
-
-Happy coding!
-
-<!-- ## Check Your Installations
-To ensure that all installations have been completed successfully, we must run the following to initialize our session after entering our server:
-```
-$ source ~/.bashrc
-```
-
-Now, please check if the following commands return the correct information.
+Once this runs, you will see a link like the following that you can use to access your Jupyter notebook:
 
 ```
-$ conda
-usage: conda [-h] [-V] command ...
+[C 16:21:28.754 NotebookApp] 
 (...)
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=<YOUR-PERSONALIZED-TOKEN>
 
-$ nvidia-docker
-
-Usage: docker [OPTIONS] COMMAND
-(...)
-
-$ nvcc -V
-nvcc: NVIDIA (R) Cuda compiler driver
-Copyright (c) 2005-2019 NVIDIA Corporation
-(...)
-
-$ nvidia-smi
-Mon Jan 01 01:01:01 2019  // Should show your own timestamp here
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 418.67       Driver Version: 418.67       CUDA Version: 10.1     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:62:00.0 Off |                    0 |
-| N/A   48C    P0    57W / 300W |      0MiB / 32480MiB |      0%      Default |
-+-------------------------------+----------------------+----------------------+
-(...)
 ```
-
-
-## Install Tensorflow
-Finally, we are now able to use our Packet server to open up Jupyter and use it for machine learning!
-
-Run the following command to create a separate environment in Conda. Name it however you like.
-```
-$ conda create --name juypter_env python=3.7
-```
-
-Now, activate this environment.
-```
-$ conda activate juypter_env
-```
-
-Install Tensorflow-GPU and Jupyter.
-```
-$ pip install tensorflow-gpu
-$ pip install jupyter
-$ pip install keras
-```
-
-Now, you are ready to run your Jupyter notebook!
-```
-$ jupyter notebook --allow-root
-``` -->
+Just copy and paste this link into your preferred browser, and begin coding! 

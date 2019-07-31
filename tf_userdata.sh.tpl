@@ -1,5 +1,10 @@
 #!/bin/bash -x
-(exec | tee stdout.log) 3>&1 1>&2 2>&3 | tee stderr.log
+exec 2> stderr.log
+
+echo "Create new user..."
+adduser --disabled-password --gecos "" user
+echo 'user ALL=(ALL) NOPASSWD:ALL' |sudo EDITOR='tee -a' visudo
+su - user
 
 echo "Running script and downloading essentials.."
 sudo apt-get update 
@@ -10,6 +15,7 @@ echo "Downloading Conda"
 wget -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
 sha256sum anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
 bash anaconda.sh -b -p $HOME/anaconda
+echo "export PATH=~/anaconda/bin:$PATH" >> ~/.bashrc
 
 source ~/.bashrc
 
@@ -55,6 +61,7 @@ sudo apt-get update
 sudo apt-get install -y cuda
 echo "export LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64" >> ~/.bashrc
 echo "export PATH=$PATH:/usr/local/cuda-10.1/bin" >> ~/.bashrc
+source ~/.bashrc
 nvcc -V
 
 echo "Unloading unnecessary drivers..."
