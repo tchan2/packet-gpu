@@ -1,13 +1,16 @@
 #!/bin/bash
 # Post-Installation Script
 
+# Enter as user
+su -user
+
 # Refresh
 source ~/.bashrc
 
 # Check commands
-conda
 docker
 nvidia-docker
+conda
 nvcc -V
 nvidia-smi
 
