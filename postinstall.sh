@@ -2,7 +2,7 @@
 # Post-Installation Script
 
 # Enter as user
-su -user
+su - user
 
 # Refresh
 source ~/.bashrc
