@@ -16,9 +16,7 @@ sudo apt-get install -y linux-headers-$(uname -r)
 printf "\nINSTALLING CONDA\n"
 wget -O /home/user/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
 sha256sum /home/user/anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
-bash /home/user/anaconda.sh -p /home/user/anaconda
-printf "\nCHECKING CONDA...\n" 
-conda
+bash /home/user/anaconda.sh -b -p /home/user/anaconda
 
 printf "\nINSTALLING DOCKER CE\n"
 sudo apt-get install -y \
@@ -62,54 +60,29 @@ sudo apt-get update
 sudo apt-get install -y cuda
 
 echo "export LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64" >> /home/user/.bashrc
-echo "export PATH=$PATH:/usr/local/cuda-10.1/bin" >> /home/user/.bashrc
-printf "\nCHECKING FOR CUDA DRIVER...\n" 
+echo "export PATH=$PATH:/usr/local/cuda-10.1/bin:/home/user/anaconda/bin" >> /home/user/.bashrc
+source /home/user/.bashrc
+
+printf "\nCHECKING CONDA...\n" 
+conda
+
+printf "\nCHECKING FOR CUDA DRIVERS...\n" 
 nvcc -V
 
 if nvidia-smi; then
   echo "Success!"
-else
+else 
   printf "\nError. Now unloading unnecessary drivers...\n"
-  sudo rmmod nvidia_drm nvidia_modeset nvidia_uvm nvidia
+  sudo rmmod nvidia_drm nvidia_modeset nvidia_uvm
+    
   printf "\nKilling processes using Nvidia.../n"
   sudo kill `sudo lsof /dev/nvidia* | awk '{print $2}' | grep -v PID`
-  printf "\nProcesses using Nvidia killed.\n"
-  sudo rmmod nvidia
 
-  printf "\nTrying again...\n"
-  nvidia-smi
+  until nvidia-smi ; do
+    printf "\nProcesses using Nvidia killed.\n"
+    sudo rmmod nvidia
+  done
 fi
-
-printf "\nINSTALLING ELASTICSEARCH\n" 
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
-sudo apt-get update && sudo apt-get install elasticsearch
-{* configures elasticsearch to run automatically during boot *}
-sudo update-rc.d elasticsearch defaults 95 10
-
-sudo -i services elasticsearch start
-printf "\nCHECKING IF ELASTICSEARCH IS RUNNING\n" 
-curl -X GET "localhost:9200/"
-
-
-printf "\nINSTALLING KIBANA\n" 
-sudo apt-get update && sudo apt-get install kibana
-{* configures kibana to run automatically during boot *}
-sudo update-rc.d kibana defaults 95 10
-
-brew services start kibana
-printf "\nCHECKING IF KIBANA IS RUNNING (Should not show any output)\n" 
-curl -X GET "localhost:5601/"
-
-
-printf "\nINSTALLING METRICBEAT\n" 
-sudo apt-get update && sudo apt-get install metricbeat
-{* configures metricbeat to run automatically during boot *}
-sudo update-rc.d metricbeat defaults 95 10
-
-brew services start elastic/tap/metricbeat-full
-printf "\nCHECKING IF METRICBEAT IS RUNNING\n" 
-curl -X GET "curl -X GET "localhost:9200/_cat/indices?v"
 
 printf "\nCHECKING IF TENSORFLOW CAN DETECT GPU...\n"
 sudo docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
