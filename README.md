@@ -198,6 +198,7 @@ $ chmod +x postinstall.sh
 
 $ ./postinstall.sh
 ```
+Please press `enter` when prompted for your password.
 
 This will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment, and create a Jupyter notebook!
 
@@ -212,7 +213,7 @@ Once this runs, you will see a link like the following that you can use to acces
 ```
 Just copy and paste this link into your preferred browser, and begin coding! 
 
-## <i>Optional: Secure Your Jupyter Notebook</i>
+## <i>Optional</i>: Secure Your Jupyter Notebook
 If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please follow these steps!
 
 ### Sign Up
