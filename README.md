@@ -9,9 +9,19 @@ A first step example of creating an environment that allows for the implementati
 5. [Set Necessary Variables](#set-necessary-variables) 
     - [`auth_token`](#auth_token)
     - [`project_id`](#project_id)
-        - [If you do not have a project](#create-a-project)
+        - [If you do not have a project](#if-you-do-not-have-a-project)
         - [If you already have a project](#if-you-already-have-a-project) 
-6. [Getting Started](##getting-started) 
+6. [Initialize Terraform](##initialize-terraform) 
+7. [Deploying the Packet Server](#deploying-the-packet-server)
+8. [Entering Your Server](#entering-your-server)
+9. [Check The Script](#check-the-script)
+10. [Create Jupyter Notebook](#create-a-jupyter-notebook)
+11. [<i>Optional</i>: Secure Your Jupyter Notebook](#optional-secure-your-jupyter-notebook)
+    - [Sign Up](#sign-up)
+    - [Create a Hostname](#create-a-hostname)
+    - [Set Your IP Address](#set-your-ip-address)
+    - [Add Your Hostname](#add-your-hostname)
+    - [Run Script](#run-script)
 
 
 ## Before You Begin
@@ -178,7 +188,7 @@ Completed. Script finished.
 at the bottom of the `cloud-init-output` log, the script has been completed.
 
 
-## Create Jupyter Notebook
+## Create a Jupyter Notebook
 To create a Jupyter notebook and run it in a Conda environment all in one, run these commands: 
 
 ```
