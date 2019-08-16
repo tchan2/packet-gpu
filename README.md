@@ -215,10 +215,10 @@ Just copy and paste this link into your preferred browser, and begin coding!
 ## <i>Optional: Secure Your Jupyter Notebook</i>
 If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please follow these steps!
 
-### <i>Sign Up</i>
+### Sign Up
 Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
 
-### <i>Create a Hostname</i>
+### Create a Hostname
 In order to create a hostname, please refer to the sidebar to the left.
 
 Click on <b>My Services</b>, and then click on <b>DNS Records</b>. You will see a button that says <i>Add a Hostname</i>.
@@ -229,22 +229,22 @@ Please set your hostname, and your preferred domain. For this guide, we will be 
 
 For the <b>Hostname Type</b>, please set it to <b> DNS Hostname (A)</b>. 
 
-### <i>Set your IP Address</i>
+### Set your IP Address
 After you have created your domain name, please insert your public IPv4 address into the IP Address field.
 
-### <i>Add your Hostname</i>
+### Add your Hostname
 Click on <b> Add Hostname </b> and you have successfully created your domain name!
 
 Please allow at least 5-10 minutes for this change to take place.
 
-### <i>Run Script</i>
+### Run Script
 If you try to enter in your domain name, you will see that your page does not work!
 
 This is due to your Jupyter notebook being on port 8888 (or whatever port you have set it on), and as you can see, your domain name does not have SSL enabled!
 
 Thankfully, I have created a script to make it easy for you to enable SSL, and for you to access your Jupyter notebook with just your domain name!
 
-### <i>Set Domain Name</i>
+### Set Domain Name
 First, run the following to get my script onto your Packet server.
 ```
 $ wget -O sslwrap.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/sslwrap.sh
