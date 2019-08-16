@@ -1,11 +1,13 @@
 #!/bin/bash -v
 
-printf "CREATE NEW USER\n"
-adduser --disabled-password --gecos "" user
-echo 'user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
-su - user
+user=user
 
-exec 2> /home/user/stderr.log
+printf "CREATE NEW USER\n"
+adduser --disabled-password --gecos "" $user
+echo '$user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
+su - $user
+
+exec 2> /home/$user/stderr.log
 pwd
 
 printf "\nDOWNLOADING ESSENTIALS\n"
@@ -14,9 +16,9 @@ sudo apt-get install -y  build-essential
 sudo apt-get install -y linux-headers-$(uname -r)
 
 printf "\nINSTALLING CONDA\n"
-wget -O /home/user/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
-sha256sum /home/user/anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
-bash /home/user/anaconda.sh -b -p /home/user/anaconda
+wget -O /home/$user/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
+sha256sum /home/$user/anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
+bash /home/$user/anaconda.sh -b -p /home/$user/anaconda
 
 printf "\nINSTALLING DOCKER CE\n"
 sudo apt-get install -y \
@@ -63,11 +65,11 @@ echo "export LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64" >> /home/
 echo "export PATH=$PATH:/usr/local/cuda-10.1/bin:/home/user/anaconda/bin" >> /home/user/.bashrc
 source /home/user/.bashrc
 
-printf "\nCHECKING CONDA...\n" 
-conda
-
 printf "\nCHECKING FOR CUDA DRIVERS...\n" 
 nvcc -V
+
+printf "\nCHECKING CONDA...\n" 
+conda
 
 if nvidia-smi; then
   echo "Success!"

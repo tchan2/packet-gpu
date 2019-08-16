@@ -173,7 +173,7 @@ at the bottom of the `cloud-init-output` log, the script has been completed.
 To create a Jupyter notebook and run it in a Conda environment all in one, run these commands: 
 
 ```
-$ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/postinstall.sh
+$ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/postinstall.sh
 
 $ chmod +x postinstall.sh
 
