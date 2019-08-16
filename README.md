@@ -1,6 +1,18 @@
 # packet-gpu
 A first step example of creating an environment that allows for the implementation of deep learning in a GPU supported Ubuntu Packet server using Terraform.
 
+## Table of Contents
+1. [Before You Begin](#before-you-begin) 
+2. [Getting Started](#getting-started) 
+3. [Clone The Repository](#clone-the-respository) 
+4. [Initialize Terraform](#initialize-terraform) 
+5. [Set Necessary Variables](#set-necessary-variables) 
+    - [`auth_token`](#auth_token)
+    - [`project_id`](#project_id)
+        - [If you do not have a project](#create-a-project)
+        - [If you already have a project](#if-you-already-have-a-project) 
+6. [Getting Started](##getting-started) 
+
 
 ## Before You Begin
 This guide was created for users who may not have Linux machines with GPU supported drivers, or want to engage in machine learning research with the use of bare metal servers. We will be using a [GPU accelerated Packet server](https://www.packet.com/cloud/) to implement a machine learning environment, which will require a [Packet account](https://app.packet.net/login) to be created, and the use of this server will have an hourly billing fee. 
@@ -56,8 +68,26 @@ variable "auth_token" {
 }
 ```
 ### `project_id`
-#### If you do not have a project...
-<i> Please skip to the [Create a Project](#create-a-project) section of this page. </i>
+### If you do not have a project...
+As a default, it has been assumed that a project has not been created, so the following block of code in `packet-gpu.tf` creates the packet_project resource:
+
+```
+resource "packet_project" "your_project_name" {
+    name = "Your Project Name"
+}
+```
+Your project name has been defaulted to `tf_project` and the name has been defaulted to `Project 1`, but you may customize it accordingly.
+
+If you have changed the project name, please also adjust the following code to fit your project name. Otherwise, leave it alone: 
+```
+resource "packet_device" "tf-gpu" {
+    (...)
+    project_id = "${packet_project.your_project_name.id}"
+}
+```
+>Please visit the section on [packet_project](https://www.terraform.io/docs/providers/packet/r/project.html) on the Terraform Packet Provider page for more information of other fields you can add to customize your Packet project even further!
+
+<i> You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page. </i>
 
 #### If you already have a project...
 If you have already created a project in your Packet account and would like to use it, first change the value of `have_proj_id` to `true`. It has been defaulted to `false`.
@@ -89,28 +119,7 @@ resource "packet_device" "tf-gpu" {
 (...)
 ```
 
-<i> You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page. </i>
-
-
-## Create a Project 
-As a default, it has been assumed that a project has not been created, so the following block of code in `packet-gpu.tf` creates the packet_project resource:
-
-```
-resource "packet_project" "your_project_name" {
-    name = "Your Project Name"
-}
-```
-Your project name has been defaulted to `tf_project` and the name has been defaulted to `Project 1`, but you may customize it accordingly.
-
-If you have changed the project name, please also adjust the following code to fit your project name. Otherwise, leave it alone: 
-```
-resource "packet_device" "tf-gpu" {
-    (...)
-    project_id = "${packet_project.your_project_name.id}"
-}
-```
-><i> Please visit the section on [packet_project](https://www.terraform.io/docs/providers/packet/r/project.html) on the Terraform Packet Provider page for more information of other fields you can add to customize your Packet project even further! </i>
-
+<i> After you are done, please continue to the [Initialize Terraform](#initialize-terraform) section below. </i>
 
 ## Initialize Terraform
 In order to deploy the Packet server, we must initialize Terraform for deployment. We do this by entering the following:
@@ -192,3 +201,61 @@ Once this runs, you will see a link like the following that you can use to acces
 
 ```
 Just copy and paste this link into your preferred browser, and begin coding! 
+
+## <i>Optional: Secure Your Jupyter Notebook</i>
+If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please follow these steps!
+
+### <i>Sign Up</i>
+Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
+
+### <i>Create a Hostname</i>
+In order to create a hostname, please refer to the sidebar to the left.
+
+Click on <b>My Services</b>, and then click on <b>DNS Records</b>. You will see a button that says <i>Add a Hostname</i>.
+
+> If you would like to pay for a domain with no-ip.com, you may click on <b>Domain Registration</b>! 
+
+Please set your hostname, and your preferred domain. For this guide, we will be using `example.ddns.net`.
+
+For the <b>Hostname Type</b>, please set it to <b> DNS Hostname (A)</b>. 
+
+### <i>Set your IP Address</i>
+After you have created your domain name, please insert your public IPv4 address into the IP Address field.
+
+### <i>Add your Hostname</i>
+Click on <b> Add Hostname </b> and you have successfully created your domain name!
+
+Please allow at least 5-10 minutes for this change to take place.
+
+### <i>Run Script</i>
+If you try to enter in your domain name, you will see that your page does not work!
+
+This is due to your Jupyter notebook being on port 8888 (or whatever port you have set it on), and as you can see, your domain name does not have SSL enabled!
+
+Thankfully, I have created a script to make it easy for you to enable SSL, and for you to access your Jupyter notebook with just your domain name!
+
+### <i>Set Domain Name</i>
+First, run the following to get my script onto your Packet server.
+```
+$ wget -O sslwrap.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/sslwrap.sh
+```
+Now, you should be able to enter and edit the script. Run the following:
+```
+$ sudo nano sslwrap.sh
+```
+
+You will see that on the top of the script, you can set your domain name! Please edit it as necessary.
+```
+# Set your domain name here
+domain=example.ddns.net
+```
+
+Please exit and save the file, and run the script:
+```
+$ chmod +x sslwrap.sh
+
+$ ./sslwrap.sh
+```
+> If you would add extra security, please run `jupyter notebook password` to set a password for your notebook after the script has ran!
+
+Now you're done! Please allow a bit of time for the changes to occur, and now you can easily go on your domain name to access your Jupyter notebook.
