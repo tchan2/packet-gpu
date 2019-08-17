@@ -22,12 +22,12 @@ nvidia-smi
 conda create --name $env_name python=3.7
 
 # Activate environment
-conda activate $env_name
+source activate $env_name
 
 # Download packages
-pip install tensorflow-gpu
-pip install jupyter
-pip install keras
+pip install --user tensorflow-gpu
+pip install --user jupyter
+pip install --user keras
 
 # Run Jupyter Notebook
 jupyter notebook
