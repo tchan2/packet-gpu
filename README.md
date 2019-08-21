@@ -269,4 +269,4 @@ $ ./sslwrap.sh
 ```
 > If you would add extra security, please run `jupyter notebook password` to set a password for your notebook after the script has ran!
 
-Now you're done! Please allow a bit of time for the changes to occur, and now you can easily go on your domain name to access your Jupyter notebook.
+Now you're done! Please allow a bit of time for the changes to occur, run `jupyter notebook` and now you can easily go on your domain name to access your Jupyter notebook.

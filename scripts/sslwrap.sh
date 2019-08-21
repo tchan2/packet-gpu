@@ -66,3 +66,10 @@ server {
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
     
     }" | sudo tee -a /etc/nginx/sites-available/$domain
+
+    # Copy and delete certain files
+    sudo cp /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/$domain
+    sudo rm /etc/nginx/sites-enabled/default 
+    
+    # Restart Nginx
+    sudo systemctl restart nginx
