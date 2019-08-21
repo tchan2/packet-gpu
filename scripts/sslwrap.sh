@@ -4,6 +4,7 @@
 
 remote_addr='$remote_addr'
 http_host='$http_host'
+request_uri='$request_uri'
 
 # Set your domain name here
 domain=your.domain.name
@@ -12,7 +13,7 @@ domain=your.domain.name
 email=your@email.com
 
 ## Get UFW
-sudo apt-get update
+sudo apt-get -y update
 sudo apt-get install ufw
 sudo ufw allow OpenSSH
 sudo ufw enable
@@ -28,18 +29,16 @@ c.NotebookApp.port = 8888
 c.NotebookApp.custom_display_url = 'https://$domain'" >> .jupyter/jupyter_notebook_config.py
 
 ## Install Nginx
-sudo apt-get -y update
 sudo apt-get -y install nginx
 
 ## Install Certbot
 sudo add-apt-repository -y ppa:certbot/certbot
-sudo apt-get -y update
 sudo apt-get -y install python-certbot-nginx
 
 ## Allow Nginx HTTPS
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
-sudo ufw allow 8888
+sudo ufw allow from 127.0.0.1 to any port 8888
 
 ## Copy and edit file
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/$domain
@@ -64,8 +63,13 @@ server {
         ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem; # managed by Certbot
         include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
     
-    }" | sudo tee -a /etc/nginx/sites-available/$domain
+server {
+        listen 80;
+        server_name $domain;
+        return 301 https://$domain$request_uri
+}" | sudo tee -a /etc/nginx/sites-available/$domain
 
     # Copy and delete certain files
     sudo cp /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/$domain
