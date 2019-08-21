@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -v
 # Post-Installation Script that checks your installations, and creates a Python environment for your Jupyter notebook.
 # This notebook can only be accessed locally. If you would like to secure your notebook with HTTPS and enter it through a domain name, please run `sslwrap.sh` after running this script.
 

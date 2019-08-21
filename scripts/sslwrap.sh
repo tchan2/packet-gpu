@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -v
 ## Please run the postinstall.sh script before running this one, if you have not created a Jupyter notebook yet. You should be signed in as `user`. If you have already created a notebook, feel free to use that one!
 ## Now, create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
 
@@ -44,6 +44,11 @@ sudo ufw allow 8888
 ## Copy and edit file
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/$domain
 sudo sed -i "s/.*/#&/" /etc/nginx/sites-available/$domain
+
+## Obtain a SSL Certificate
+sudo certbot --nginx --agree-tos --email $email -q -d $domain
+
+## Edit file
 echo "
 server {
         server_name $domain;
@@ -52,8 +57,12 @@ server {
             proxy_set_header Host $http_host;
             proxy_pass "http://127.0.0.1:8888";
         }
+
+        listen [::]:443 ssl ipv6only=on; # managed by Certbot
+        listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
     
     }" | sudo tee -a /etc/nginx/sites-available/$domain
-
-## Obtain a SSL Certificate
-sudo certbot --nginx --agree-tos --email $email -q -d $domain
