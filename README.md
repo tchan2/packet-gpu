@@ -79,14 +79,14 @@ variable "auth_token" {
 ```
 ### `project_id`
 ### If you do not have a project...
-As a default, it has been assumed that a project has not been created, so the following block of code in `packet-gpu.tf` creates the packet_project resource:
+As a default, it has been assumed that a project has not been created, so the following block of code in `packet-gpu.tf` creates the `packet_project` resource:
 
 ```
 resource "packet_project" "your_project_name" {
     name = "Your Project Name"
 }
 ```
-Your project name has been defaulted to `tf_project` and the name has been defaulted to `Project 1`, but you may customize it accordingly.
+Your project name has been defaulted to `tf_project` and the description name has been defaulted to `New Project`, but you may customize it accordingly.
 
 If you have changed the project name, please also adjust the following code to fit your project name. Otherwise, leave it alone: 
 ```
@@ -100,18 +100,9 @@ resource "packet_device" "tf-gpu" {
 <i> You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page. </i>
 
 #### If you already have a project...
-If you have already created a project in your Packet account and would like to use it, first change the value of `have_proj_id` to `true`. It has been defaulted to `false`.
+If you have already created a project in your Packet account and would like to use it, first enter `variables.tf`.
 
-```
-variable "have_proj_id" {
-    default = true
-    # originally
-    # default = false
-}
-```
-> Make sure you set the value of `have_proj_id` to true, or else another project will be created, and you will be billed for it!
-
-Now, enter your project ID in the `default` field and uncomment it. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
+Enter your project ID in the `default` field. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>`.
 
 ```
 variable "project_id" {
@@ -120,13 +111,19 @@ variable "project_id" {
 }
 ```
 
-Then, head into the `packet-gpu.tf` file. Change the `project_id` field of the packet_device resource from `"${packet_project.tf_project.id}"` to `"${var.project_id}"`:
+Then, head into the `packet-gpu.tf` file. Comment out `project_id = "${packet_project.tf_project.id}"`, and uncomment `project_id = "${var.project_id}"`:
 ```
 resource "packet_device" "tf-gpu" {
     project_id            = "${var.project_id}"
-    # originally... 
     # project_id          = "${packet_project.tf_project.id}"
 (...)
+```
+
+Also, comment out the block of code that creates a `packet_project` resource:
+```
+# resource "packet_project" "your_project_name" {
+#     name = "Your Project Name"
+# }
 ```
 
 <i> After you are done, please continue to the [Initialize Terraform](#initialize-terraform) section below. </i>
@@ -194,13 +191,14 @@ To create a Jupyter notebook and run it in a Conda environment all in one, run t
 ```
 $ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/postinstall.sh
 
+# This script also creates a Conda environment for you. If you would like to change the name of the Conda environment, please edit the file before you run the next two commands. 
+
 $ chmod +x postinstall.sh
 
 $ ./postinstall.sh
 ```
-Please press `enter` when prompted for your password.
 
-This will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment, and create a Jupyter notebook!
+If you have left the script as the defaults, this will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment called `jupyter_env`, and create a Jupyter notebook!
 
 Once this runs, you will see a link like the following that you can use to access your Jupyter notebook:
 
@@ -211,30 +209,35 @@ Once this runs, you will see a link like the following that you can use to acces
         http://localhost:8888/?token=<YOUR-PERSONALIZED-TOKEN>
 
 ```
-Just copy and paste this link into your preferred browser, and begin coding! 
+Just copy and paste this link into your preferred browser, and begin coding!
+
+> <i> If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please go to [Secure Your Jupyter Notebook](#optional-secure-your-jupyter-notebook) to see how!</i>
 
 ## <i>Optional</i>: Secure Your Jupyter Notebook
-If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please follow these steps!
+The following guide will allow you to access your Jupyter notebook through a SSL enabled and free custom domain name created through [No-IP](https://no-ip.com).
 
-### Sign Up
+> <i> If you are not using No-IP and are using another site or have already created a domain name, please make sure your IP address has been set to the correct one. Then, please skip to section [Run Script](#run-script).</i>
+
+### Creating Domain Name on No-IP
+#### Sign Up
 Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
 
-### Create a Hostname
+#### Create a Hostname
 In order to create a hostname, please refer to the sidebar to the left.
 
-Click on <b>My Services</b>, and then click on <b>DNS Records</b>. You will see a button that says <i>Add a Hostname</i>.
+Click on <i>My Services</i>, and then click on <i>DNS Records</i>. You will see a button that says <b><i>Add a Hostname</i></b>.
 
-> If you would like to pay for a domain with no-ip.com, you may click on <b>Domain Registration</b>! 
+> If you would like to pay for a domain with no-ip.com, you may click on <b><i>Domain Registration</i></b>! 
 
 Please set your hostname, and your preferred domain. For this guide, we will be using `example.ddns.net`.
 
-For the <b>Hostname Type</b>, please set it to <b> DNS Hostname (A)</b>. 
+For the <i>Hostname Type</i>, please set it to <i> DNS Hostname (A)</i>. 
 
-### Set your IP Address
+#### Set your IP Address
 After you have created your domain name, please insert your public IPv4 address into the IP Address field.
 
-### Add your Hostname
-Click on <b> Add Hostname </b> and you have successfully created your domain name!
+#### Add your Hostname
+Click on <i> Add Hostname </i> and you have successfully created your domain name!
 
 Please allow at least 5-10 minutes for this change to take place.
 
@@ -245,7 +248,7 @@ This is due to your Jupyter notebook being on port 8888 (or whatever port you ha
 
 Thankfully, I have created a script to make it easy for you to enable SSL, and for you to access your Jupyter notebook with just your domain name!
 
-### Set Domain Name
+#### Set Domain Name
 First, run the following to get my script onto your Packet server.
 ```
 $ wget -O sslwrap.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/sslwrap.sh
@@ -255,10 +258,13 @@ Now, you should be able to enter and edit the script. Run the following:
 $ sudo nano sslwrap.sh
 ```
 
-You will see that on the top of the script, you can set your domain name! Please edit it as necessary.
+You will see that on the top of the script, you can set your domain name and email. Please edit it as necessary.
 ```
 # Set your domain name here
 domain=example.ddns.net
+
+# Set your email here
+email=example@email.com
 ```
 
 Please exit and save the file, and run the script:
@@ -267,6 +273,18 @@ $ chmod +x sslwrap.sh
 
 $ ./sslwrap.sh
 ```
-> If you would add extra security, please run `jupyter notebook password` to set a password for your notebook after the script has ran!
 
-Now you're done! Please allow a bit of time for the changes to occur, run `jupyter notebook` and now you can easily go on your domain name to access your Jupyter notebook.
+#### Set your Jupyter Notebook Password
+As this script runs, you will see that you are prompted for a password for your Jupyter notebook! Please input your preferred password to continue the script.
+
+#### Access Your Jupyter Notebook
+Now, your Jupyter notebook would have been opened! You should see this: 
+
+```
+(...)
+[I 21:16:06.647 NotebookApp] The Jupyter Notebook is running at:
+[I 21:16:06.647 NotebookApp] https://your.domain.name/
+(...)
+```
+
+Please follow the link provided, enter your password, and start coding!

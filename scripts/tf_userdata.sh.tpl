@@ -15,7 +15,7 @@ sudo apt-get install -y linux-headers-$(uname -r)
 
 printf "\nINSTALLING CONDA\n"
 wget -O /home/user/anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
-sha256sum /home/user/anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {print "good!"}'
+sha256sum /home/user/anaconda.sh | awk '$1=="45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a" {printf "Installation verified!\n"}'
 bash /home/user/anaconda.sh -b -p /home/user/anaconda
 
 printf "\nINSTALLING DOCKER CE\n"
@@ -69,17 +69,18 @@ nvcc -V
 printf "\nCHECKING CONDA...\n" 
 conda
 
+printf "\nCHECKING NVIDIA-SMI...\n" 
 if nvidia-smi; then
-  echo "Success!"
+  echo "Success!\n"
 else 
-  printf "\nError. Now unloading unnecessary drivers...\n"
+  printf "Error. The command has failed. Now unloading unnecessary drivers...\n"
   sudo rmmod nvidia_drm nvidia_modeset nvidia_uvm
     
-  printf "\nKilling processes using Nvidia.../n"
+  printf "Killing processes using Nvidia.../n"
   sudo kill `sudo lsof /dev/nvidia* | awk '{print $2}' | grep -v PID`
 
   until nvidia-smi ; do
-    printf "\nProcesses using Nvidia killed.\n"
+    printf "Processes using Nvidia killed.\n"
     sudo rmmod nvidia
   done
 fi
