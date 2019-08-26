@@ -1,12 +1,12 @@
 #!/bin/bash
-# Post-Installation Script that checks your installations, and creates a Python environment for your Jupyter notebook.
-# This notebook can only be accessed locally. If you would like to secure your notebook with HTTPS and enter it through a domain name, please run `sslwrap.sh` after running this script.
+# Checks your installations, and runs Jupyter notebook locally.
+# If you would like to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
 # Set environment name
 env_name=jupyter_env
 
-# Begin postinstall.sh
-printf "STARTING POSTINSTALL.SH SCRIPT.\n"
+# Begin script
+printf "STARTING SCRIPT.\n"
 
 # Refresh
 printf "\nREFRESHING BASHRC...\n"
@@ -58,3 +58,6 @@ printf "\nKERAS\n"
 pip install --user keras
 
 printf "\nSCRIPT COMPLETED.\n"
+
+printf "\nRUNNING JUPYTER NOTEBOOK...\n"
+jupyter notebook

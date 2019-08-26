@@ -1,30 +1,7 @@
 # packet-gpu
 A first step example of creating an environment that allows for the implementation of deep learning in a GPU supported Ubuntu Packet server using Terraform.
 
-## Table of Contents
-1. [Before You Begin](#before-you-begin) 
-2. [Getting Started](#getting-started) 
-3. [Clone The Repository](#clone-the-respository) 
-4. [Initialize Terraform](#initialize-terraform) 
-5. [Set Necessary Variables](#set-necessary-variables) 
-    - [`auth_token`](#auth_token)
-    - [`project_id`](#project_id)
-        - [If you do not have a project](#if-you-do-not-have-a-project)
-        - [If you already have a project](#if-you-already-have-a-project) 
-6. [Initialize Terraform](##initialize-terraform) 
-7. [Deploying the Packet Server](#deploying-the-packet-server)
-8. [Entering Your Server](#entering-your-server)
-9. [Check The Script](#check-the-script)
-10. [Create Jupyter Notebook](#create-a-jupyter-notebook)
-11. [<i>Optional</i>: Secure Your Jupyter Notebook](#optional-secure-your-jupyter-notebook)
-    - [Sign Up](#sign-up)
-    - [Create a Hostname](#create-a-hostname)
-    - [Set Your IP Address](#set-your-ip-address)
-    - [Add Your Hostname](#add-your-hostname)
-    - [Run Script](#run-script)
-
-
-## Before You Begin
+# Before You Begin
 This guide was created for users who may not have Linux machines with GPU supported drivers, or want to engage in machine learning research with the use of bare metal servers. We will be using a [GPU accelerated Packet server](https://www.packet.com/cloud/) to implement a machine learning environment, which will require a [Packet account](https://app.packet.net/login) to be created, and the use of this server will have an hourly billing fee. 
 
 Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as the operating system and several packages and installations will be installed automatically. It will be helpful to have prior knowledge in Linux commands and the following installations, but you may install other applications to aid you in your machine learning research as desired:
@@ -36,11 +13,38 @@ Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as th
 - Tensorflow-GPU
 - Jupyter
 
+# Table of Contents
+1. [Getting Started](#getting-started) 
+2. [Clone The Repository](#clone-the-respository) 
+3. [Initialize Terraform](#initialize-terraform) 
+4. [Set Necessary Variables](#set-necessary-variables) 
+    - [`auth_token`](#auth_token)
+    - [`project_id`](#project_id)
+        - [If you do not have a project](#if-you-do-not-have-a-project)
+        - [If you already have a project](#if-you-already-have-a-project) 
+5. [Initialize Terraform](##initialize-terraform) 
+6. [Deploying the Packet Server](#deploying-the-packet-server)
+7. [Entering Your Server](#entering-your-server)
+8. [Check The Script](#check-the-script)
+9. [Create a Jupyter Notebook Without a Domain Name](#create-a-jupyter-notebook-without-a-domain-name)
+10. [Create a Jupyter Notebook With a Domain Name](#create-a-jupyter-notebook-with-a-domain-name)
+    - [Sign Up](#sign-up)
+    - [Create a Hostname](#create-a-hostname)
+    - [Set Your IP Address](#set-your-ip-address)
+    - [Add Your Hostname](#add-your-hostname)
+    - [Run Script](#run-script)
+    
+    
+11. [Acknowledgments](#acknowledgments)
+
+<br />
 
 ## Getting Started
-Begin by [installing Terraform](https://www.terraform.io/downloads.html) on your machine. (A Mac was used in the making of this guide, but you may use any machine as long as Terraform supports installation for your operating system). 
+Begin by [installing Terraform](https://www.terraform.io/downloads.html) on your machine. I have used a Mac, but you are free to use any machine as long as Terraform supports your operating system.
 
-Please ensure that you download the file with the correct operating system and architecture of the machine you will be using Terraform on.
+Please ensure that you download the file with the correct operating system and architecture of the machine you will be using Terraform on, or use a package manager (like [Homebrew](https://brew.sh) if you have a Mac or Linux machine) to automate the installation process.
+
+> <i> For help installing Terraform, please refer to Terraform's [Installation Guide](https://learn.hashicorp.com/terraform/getting-started/install.html#installing-terraform).</i>
 
 Verify that your Terraform installation has been performed successfully and that your `PATH` has been set correctly by running the `terraform` command.
 
@@ -54,7 +58,7 @@ Usage: terraform [-version] [-help] <command> [args]
 
 
 ## Clone the Repository
-Clone this repository to have all the necessary files needed to easily deploy a server with GPU support.
+Clone this repository on your machine to have all the necessary files needed to easily deploy a server with GPU support.
 
 This can be done by entering the following: 
 ```
@@ -126,7 +130,7 @@ Also, comment out the block of code that creates a `packet_project` resource:
 # }
 ```
 
-<i> After you are done, please continue to the [Initialize Terraform](#initialize-terraform) section below. </i>
+<i> After you are done, please continue to the section below. </i>
 
 ## Initialize Terraform
 In order to deploy the Packet server, we must initialize Terraform for deployment. We do this by entering the following:
@@ -155,17 +159,12 @@ If all the steps have been completed successfully, a Packet server will have bee
 ## Enter Your Server
 Open up a terminal, and SSH into your device. You may do this by entering:
 ```
-ssh -L 8888:localhost:8888 root@PUBLIC_IPv4_ADDRESS
+ssh -L 8888:localhost:8888 user@PUBLIC_IPv4_ADDRESS
 ```
 
 The IP address of your server can be found by logging into your Packet account and checking there, or by searching the `terraform.tfstate` file that has just been created after running `terraform apply`. 
 
 Once there, please create a passphrase to secure your server.
-
-Now, enter into your user account!
-```
-$ su - user
-```
 
 ## Check the Script
 In order to use the packages and installations in this server, it will be required that the script running in the server's user data has been completed.
@@ -179,19 +178,16 @@ You may run this commmand as many times as you would like as the log will update
 Once you see
 ```
 (...)
-echo "Completed. Script finished."
 Completed. Script finished.
 ```
 at the bottom of the `cloud-init-output` log, the script has been completed.
 
 
-## Create a Jupyter Notebook
-To create a Jupyter notebook and run it in a Conda environment all in one, run these commands: 
+## Create a Jupyter Notebook Without A Domain Name
+To check your installations, install necessary packages, and create an insecure Jupyter notebook without a domain name in a Conda environment, run these commands: 
 
 ```
 $ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/postinstall.sh
-
-# This script also creates a Conda environment for you. If you would like to change the name of the Conda environment, please edit the file before you run the next two commands. 
 
 $ chmod +x postinstall.sh
 
@@ -211,74 +207,52 @@ Once this runs, you will see a link like the following that you can use to acces
 ```
 Just copy and paste this link into your preferred browser, and begin coding!
 
-> <i> If you would like to secure your Jupyter notebook with HTTPS using a SSL certificate, and also be able to access it by entering your custom domain name, please go to [Secure Your Jupyter Notebook](#optional-secure-your-jupyter-notebook) to see how!</i>
+<br />
 
-## <i>Optional</i>: Secure Your Jupyter Notebook
-The following guide will allow you to access your Jupyter notebook through a SSL enabled and free custom domain name created through [No-IP](https://no-ip.com).
+## Create a SSL-Enabled Jupyter Notebook With Domain Name
+To check your installations, install necessary packages, and run a SSL-enabled Jupyter Notebook with a domain name, please follow the following instructions.
 
-> <i> If you are not using No-IP and are using another site or have already created a domain name, please make sure your IP address has been set to the correct one. Then, please skip to section [Run Script](#run-script).</i>
+<b>Note</b>: This guide will focus on using [No-IP](https://no-ip.com) to create a domain name.
 
-### Creating Domain Name on No-IP
-#### Sign Up
+> If you do not wish to use No-IP and are using another site or have already created a domain name, please make sure your IP address has been set correctly, and then skip to [Run Script](#run-script).
+
+### Sign Up 
 Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
 
-#### Create a Hostname
+### Create a Hostname
 In order to create a hostname, please refer to the sidebar to the left.
 
-Click on <i>My Services</i>, and then click on <i>DNS Records</i>. You will see a button that says <b><i>Add a Hostname</i></b>.
+Click on <i>`My Services`</i>, and then click on <i>`DNS Records`</i>. You will see a button that says <b><i>`Add a Hostname`</i></b>.
 
-> If you would like to pay for a domain with no-ip.com, you may click on <b><i>Domain Registration</i></b>! 
+> If you would like to pay for a domain with no-ip.com, you may click on <b><i>`Domain Registration`</i></b>! 
 
-Please set your hostname, and your preferred domain. For this guide, we will be using `example.ddns.net`.
+Please set your hostname, and your preferred domain.
 
-For the <i>Hostname Type</i>, please set it to <i> DNS Hostname (A)</i>. 
+Then, for the <i>`Hostname Type`</i>, please set it to <i> `DNS Hostname (A)`</i>. 
 
-#### Set your IP Address
+### Set your IP Address
 After you have created your domain name, please insert your public IPv4 address into the IP Address field.
 
-#### Add your Hostname
-Click on <i> Add Hostname </i> and you have successfully created your domain name!
+### Add your Hostname
+Click on <i> `Add Hostname` </i> and you have successfully created your domain name!
 
 Please allow at least 5-10 minutes for this change to take place.
 
 ### Run Script
-If you try to enter in your domain name, you will see that your page does not work!
-
-This is due to your Jupyter notebook being on port 8888 (or whatever port you have set it on), and as you can see, your domain name does not have SSL enabled!
-
-Thankfully, I have created a script to make it easy for you to enable SSL, and for you to access your Jupyter notebook with just your domain name!
-
-#### Set Domain Name
-First, run the following to get my script onto your Packet server.
+Run the following to get my script onto your Packet server to be able to enable SSL wrapping for your domain, and to add that domain name to your Jupyter notebook!
 ```
 $ wget -O sslwrap.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/sslwrap.sh
-```
-Now, you should be able to enter and edit the script. Run the following:
-```
-$ sudo nano sslwrap.sh
-```
 
-You will see that on the top of the script, you can set your domain name and email. Please edit it as necessary.
-```
-# Set your domain name here
-domain=example.ddns.net
-
-# Set your email here
-email=example@email.com
-```
-
-Please exit and save the file, and run the script:
-```
 $ chmod +x sslwrap.sh
-
-$ ./sslwrap.sh
 ```
 
-#### Set your Jupyter Notebook Password
-As this script runs, you will see that you are prompted for a password for your Jupyter notebook! Please input your preferred password to continue the script.
+Now, pass your domain name and your email as the two arguments for the script to run it:
+```
+$ ./sslwrap.sh your.domain.name your@email.com
+```
 
-#### Access Your Jupyter Notebook
-Now, your Jupyter notebook would have been opened! You should see this: 
+### Access Your Jupyter Notebook
+Now, your Jupyter notebook should have started running! You should see this: 
 
 ```
 (...)
@@ -288,3 +262,6 @@ Now, your Jupyter notebook would have been opened! You should see this:
 ```
 
 Please follow the link provided, enter your password, and start coding!
+
+## Acknowledgments
+Special thanks to [My](https://github.com/truongmd), [Zak](https://github.com/zalkar-z) and, [Joseph](https://github.com/jmarhee) for all the help on this product!

@@ -1,19 +1,69 @@
 #!/bin/bash
-## Please run the postinstall.sh script before running this one, if you have not created a Jupyter notebook yet. You should be signed in as `user`. If you have already created a notebook, feel free to use that one!
-## Now, create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
+# Please create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
+# If you don't wish to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
 remote_addr='$remote_addr'
 http_host='$http_host'
 request_uri='$request_uri'
+env_name=jupyter_env
 
 # Set your domain name here
-domain=your.domain.name
+domain=${1?ERROR: No domain given}
 
 # Set your email here
-email=your@email.com
+email=${2?ERROR: No email given}
 
 # Begin sslwrap.sh
-printf "STARTING SSLWRAP.SH SCRIPT.\n"
+printf "STARTING SCRIPT.\n"
+
+# Refresh
+printf "\nREFRESHING BASHRC...\n"
+source ~/.bashrc
+printf "Done!\n"
+
+# Update Conda
+printf "\nUPDATING CONDA...\n"
+echo y | conda update -n base -c defaults conda
+
+# Check commands
+printf "\nCHECKING COMMANDS..."
+printf "\nDOCKER\n"
+docker
+
+printf "\nNVIDIA-DOCKER\n"
+nvidia-docker
+
+printf "\nNVIDIA CUDA COMPILER\n"
+nvcc -V
+
+printf "\nNVIDIA DRIVERS\n"
+nvidia-smi
+
+printf "\nCONDA\n"
+conda
+
+# Initialize Conda
+printf "\nINITIALIZING CONDA...\n"
+conda init
+
+# Create environment
+printf "\nCREATING ENVIRONMENT CALLED: '$env_name'...\n"
+echo y | conda create --name $env_name python=3.7
+
+# Activate environment
+printf "\nACTIVATING ENVIRONMENT...\n"
+source activate $env_name
+
+# Download packages
+printf "\nINSTALLING PACKAGES..."
+printf "\nTENSORFLOW-GPU\n"
+pip install --user tensorflow-gpu
+
+printf "\nJUPYTER\n"
+pip install --user jupyter
+
+printf "\nKERAS\n"
+pip install --user keras
 
 # Get UFW
 printf "\nUPDATING...\n"
@@ -35,7 +85,6 @@ printf "\nEDITING JUPYTER CONFIG FILE...\n"
 echo "c.NotebookApp.allow_origin = '*'
 c.NotebookApp.ip = '0.0.0.0'
 c.NotebookApp.open_browser = False
-c.NotebookApp.port = 8888
 c.NotebookApp.custom_display_url = 'https://$domain'" >> .jupyter/jupyter_notebook_config.py
 
 # Install Nginx
