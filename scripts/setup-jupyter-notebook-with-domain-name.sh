@@ -2,6 +2,64 @@
 ## Please run the postinstall.sh script before running this one, if you have not created a Jupyter notebook yet. You should be signed in as `user`. If you have already created a notebook, feel free to use that one!
 ## Now, create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
 
+# Set environment name
+env_name=jupyter_env
+
+# Begin postinstall.sh
+printf "STARTING POSTINSTALL.SH SCRIPT.\n"
+
+# Refresh
+printf "\nREFRESHING BASHRC...\n"
+source ~/.bashrc
+printf "Done!\n"
+
+# Update Conda
+printf "\nUPDATING CONDA...\n"
+echo y | conda update -n base -c defaults conda
+
+# Check commands
+printf "\nCHECKING COMMANDS..."
+printf "\nDOCKER\n"
+docker
+
+printf "\nNVIDIA-DOCKER\n"
+nvidia-docker
+
+printf "\nNVIDIA CUDA COMPILER\n"
+nvcc -V
+
+printf "\nNVIDIA DRIVERS\n"
+nvidia-smi
+
+printf "\nCONDA\n"
+conda
+
+# Initialize Conda
+printf "\nINITIALIZING CONDA...\n"
+conda init
+
+# Create environment
+printf "\nCREATING ENVIRONMENT CALLED: '$env_name'...\n"
+echo y | conda create --name $env_name python=3.7
+
+# Activate environment
+printf "\nACTIVATING ENVIRONMENT...\n"
+source activate $env_name
+
+# Download packages
+printf "\nINSTALLING PACKAGES..."
+printf "\nTENSORFLOW-GPU\n"
+pip install --user tensorflow-gpu
+
+printf "\nJUPYTER\n"
+pip install --user jupyter
+
+printf "\nKERAS\n"
+pip install --user keras
+
+#################
+
+
 remote_addr='$remote_addr'
 http_host='$http_host'
 request_uri='$request_uri'
