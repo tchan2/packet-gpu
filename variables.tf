@@ -22,7 +22,7 @@ variable "plan" {
 
 variable "facility" {
     description = "The facility your Packet server is in. This information can be found in the 'Location' part of your preferred server's details."
-    default = "dfw2"
+    default = ["dfw2"]
 }
 
 variable "os" {
