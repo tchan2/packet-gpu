@@ -57,4 +57,9 @@ pip install --user jupyter
 printf "\nKERAS\n"
 pip install --user keras
 
+# Run Jupyter Notebook
+printf "\nRUNNING JUPYTER NOTEBOOK...\n"
+jupyter notebook
+
+
 printf "\nSCRIPT COMPLETED.\n"
