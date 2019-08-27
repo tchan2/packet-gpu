@@ -1,8 +1,9 @@
-#!/bin/bash -v
+#!/bin/bash -ve
 
 printf "CREATE NEW USER\n"
 adduser --disabled-password --gecos "" user
 echo 'user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
+rsync --archive --chown=user:user ~/.ssh /home/user
 su - user
 
 exec 2> /home/user/stderr.log
@@ -37,6 +38,11 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 printf "\nCHECKING DOCKER...\n" 
 docker
 
+if ! type docker; then
+  printf "\nDocker was not properly installed! Trying again...\n";
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io;
+fi
+
 printf "\nADDING PKG REPOS FOR NVIDIA-DOCKER\n"
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
   sudo apt-key add -
@@ -57,7 +63,7 @@ wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/c
 sudo dpkg -i cuda-repo-ubuntu1604_10.1.168-1_amd64.deb
 sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
 sudo apt-get update
-sudo apt-get install -y cuda
+sudo apt-get install -y cuda 
 
 echo "export LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.1/lib64" >> /home/user/.bashrc
 echo "export PATH=$PATH:/usr/local/cuda-10.1/bin:/home/user/anaconda/bin" >> /home/user/.bashrc
@@ -80,9 +86,10 @@ else
   sudo kill `sudo lsof /dev/nvidia* | awk '{print $2}' | grep -v PID`
 
   until nvidia-smi ; do
-    printf "Processes using Nvidia killed.\n"
     sudo rmmod nvidia
+    sleep 10 
   done
+  printf "Processes using Nvidia killed.\n"
 fi
 
 printf "\nCHECKING IF TENSORFLOW CAN DETECT GPU...\n"
