@@ -1,24 +1,22 @@
-#!/bin/bash
+#!/bin/bash -ex
 # Please create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
 # If you don't wish to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
-remote_addr='$remote_addr'
-http_host='$http_host'
-request_uri='$request_uri'
+# request_uri='$request_uri'
 env_name=jupyter_env
 
 # Set your domain name here
 domain=${1?ERROR: No domain given}
 
 # Set your email here
-email=${2?ERROR: No email given}
+ email=${2?ERROR: No email given}
 
 # Begin sslwrap.sh
 printf "STARTING SCRIPT.\n"
 
 # Refresh
 printf "\nREFRESHING BASHRC...\n"
-source ~/.bashrc
+source home/user/.bashrc
 printf "Done!\n"
 
 # Update Conda
@@ -41,6 +39,12 @@ nvidia-smi
 
 printf "\nCONDA\n"
 conda
+
+if ! type conda; then 
+    printf "Command not found. Readding path and refreshing ~/.bashrc...";
+    echo ""
+    source ~/.bashrc;
+fi
 
 # Initialize Conda
 printf "\nINITIALIZING CONDA...\n"
@@ -102,6 +106,10 @@ sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo ufw allow from 127.0.0.1 to any port 8888
 
+# Obtain a SSL Certificate
+printf "\nGETTING SSL CERTIFICATE...\n"
+sudo certbot --nginx --agree-tos --redirect -q -d $domain --email $email 
+
 # Copy and edit file
 printf "\nCOPYING AND COMMENTING OUT FILE...\n"
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/$domain
@@ -113,8 +121,6 @@ echo "
 server {
         server_name $domain;
         location / {
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header Host $http_host;
             proxy_pass "http://127.0.0.1:8888";
         }
 
@@ -126,16 +132,12 @@ server {
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
     
-server {
-        listen 80;
-        server_name $domain;
-        return 301 https://$domain$request_uri;
-}" | sudo tee -a /etc/nginx/sites-available/$domain >/dev/null
-
-
-# Obtain a SSL Certificate
-printf "\nGETTING SSL CERTIFICATE...\n"
-sudo certbot --nginx --agree-tos --email $email -q -d $domain
+# server {
+#        listen 80;
+#        server_name $domain;
+#        return 301 https://$domain$request_uri;
+#}
+" | sudo tee -a /etc/nginx/sites-available/$domain >/dev/null
 
 # Copy and delete certain files
 printf "\nEDITING FILES...\n"

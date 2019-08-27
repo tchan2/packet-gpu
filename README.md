@@ -40,11 +40,9 @@ Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as th
 <br />
 
 ## Getting Started
-Begin by [installing Terraform](https://www.terraform.io/downloads.html) on your machine. I have used a Mac, but you are free to use any machine as long as Terraform supports your operating system.
+Begin by [installing Terraform](https://www.terraform.io/downloads.html) on your machine. (A Mac was used in the making of this guide, but you may use any machine as long as Terraform supports installation for your operating system).
 
-Please ensure that you download the file with the correct operating system and architecture of the machine you will be using Terraform on, or use a package manager (like [Homebrew](https://brew.sh) if you have a Mac or Linux machine) to automate the installation process.
-
-> <i> For help installing Terraform, please refer to Terraform's [Installation Guide](https://learn.hashicorp.com/terraform/getting-started/install.html#installing-terraform).</i>
+Please ensure that you download the file with the correct operating system and architecture of the machine you will be using Terraform on, or use a package manager (like [Homebrew](https://brew.sh) if you have a Mac or Linux machine, or [Chocolatey](https://chocolatey.org/packages/terraform) if you have Windows) to automate the installation process.
 
 Verify that your Terraform installation has been performed successfully and that your `PATH` has been set correctly by running the `terraform` command.
 
@@ -156,6 +154,10 @@ Check the plan again, and answer `yes` if everything is to your liking.
 If all the steps have been completed successfully, a Packet server will have been deployed!
 
 
+<b>IMPORTANT NOTE:<i> Please keep in mind that the continuous creation and deletion of projects will result in larger fines.</i></b> To prevent this, please run `terraform apply -target=module.tf-gpu`* to create more devices or update them without adding more to your bill!
+
+><i>*Targetting modules allows projects to be re-used when you add, remove,or recycle GPU nodes. Please visit Terraform's documentation on [modules](https://www.terraform.io/docs/configuration/modules.html) for more information.</i>
+
 ## Enter Your Server
 Open up a terminal, and SSH into your device. You may do this by entering:
 ```
@@ -187,11 +189,11 @@ at the bottom of the `cloud-init-output` log, the script has been completed.
 To check your installations, install necessary packages, and create an insecure Jupyter notebook without a domain name in a Conda environment, run these commands: 
 
 ```
-$ wget -O postinstall.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/postinstall.sh
+$ wget -O http-jupyter.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/without-domain.sh
 
-$ chmod +x postinstall.sh
+$ chmod +x http-jupyter.sh
 
-$ ./postinstall.sh
+$ ./http-jupyter.sh
 ```
 
 If you have left the script as the defaults, this will test your installations and make sure that they have installed correctly, create and activate an GPU-supported Anaconda environment called `jupyter_env`, and create a Jupyter notebook!
@@ -241,14 +243,14 @@ Please allow at least 5-10 minutes for this change to take place.
 ### Run Script
 Run the following to get my script onto your Packet server to be able to enable SSL wrapping for your domain, and to add that domain name to your Jupyter notebook!
 ```
-$ wget -O sslwrap.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/sslwrap.sh
+$ wget -O https-jupyter.sh https://raw.githubusercontent.com/tchan2/packet-gpu/master/scripts/with-domain.sh
 
-$ chmod +x sslwrap.sh
+$ chmod +x https-jupyter.sh
 ```
 
 Now, pass your domain name and your email as the two arguments for the script to run it:
 ```
-$ ./sslwrap.sh your.domain.name your@email.com
+$ ./https-jupyter.sh your.domain.name your@email.com
 ```
 
 ### Access Your Jupyter Notebook

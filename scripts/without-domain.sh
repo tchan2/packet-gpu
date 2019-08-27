@@ -13,10 +13,6 @@ printf "\nREFRESHING BASHRC...\n"
 source ~/.bashrc
 printf "Done!\n"
 
-# Update Conda
-printf "\nUPDATING CONDA...\n"
-echo y | conda update -n base -c defaults conda
-
 # Check commands
 printf "\nCHECKING COMMANDS..."
 printf "\nDOCKER\n"
@@ -33,6 +29,12 @@ nvidia-smi
 
 printf "\nCONDA\n"
 conda
+if conda; then 
+    printf "\n";
+else
+    printf "Command not found. Readding path and refreshing ~/.bashrc...";
+    source /home/user/.bashrc;
+fi
 
 # Initialize Conda
 printf "\nINITIALIZING CONDA...\n"
