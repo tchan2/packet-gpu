@@ -41,7 +41,12 @@ docker
 
 if ! type docker; then
   printf "\nDocker was not properly installed! Trying again...\n";
+  sudo add-apt-repository \
+     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+     $(lsb_release -cs) \
+     stable";
   sudo apt-get install -y docker-ce docker-ce-cli containerd.io;
+  docker;
 fi
 
 printf "\nADDING PKG REPOS FOR NVIDIA-DOCKER\n"
@@ -83,7 +88,7 @@ else
   printf "Error. The command has failed. Now unloading unnecessary drivers...\n"
   sudo rmmod nvidia_drm nvidia_modeset nvidia_uvm
     
-  printf "Killing processes using Nvidia.../n"
+  printf "Killing processes using Nvidia...\n"
   sudo kill `sudo lsof /dev/nvidia* | awk '{print $2}' | grep -v PID`
 
   until nvidia-smi ; do

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 # Checks your installations, and runs Jupyter notebook locally.
 # If you would like to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
@@ -22,23 +22,23 @@ printf "\nNVIDIA-DOCKER\n"
 nvidia-docker
 
 printf "\nNVIDIA CUDA COMPILER\n"
-nvcc -V
+if nvcc -V; then
+    printf"\n"
+else
+    printf "nvcc -V not found. Refreshing /.bashrc...\n"
+    source ~/.bashrc
+fi 
 
 printf "\nNVIDIA DRIVERS\n"
 nvidia-smi
 
 printf "\nCONDA\n"
-conda
 if conda; then 
-    printf "\n";
+    printf "\n"
 else
-    printf "Command not found. Readding path and refreshing ~/.bashrc...";
-    source /home/user/.bashrc;
+    printf "conda not found. Refreshing ~/.bashrc...\n"
+    source ~/.bashrc
 fi
-
-# Initialize Conda
-printf "\nINITIALIZING CONDA...\n"
-conda init
 
 # Create environment
 printf "\nCREATING ENVIRONMENT CALLED: '$env_name'...\n"

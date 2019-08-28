@@ -1,27 +1,25 @@
-#!/bin/bash -ex
+#!/bin/bash -ie
 # Please create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
 # If you don't wish to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
-# request_uri='$request_uri'
+remote_addr='$remote_addr'
+http_host='$http_host'
+request_uri='$request_uri'
 env_name=jupyter_env
 
 # Set your domain name here
 domain=${1?ERROR: No domain given}
 
 # Set your email here
- email=${2?ERROR: No email given}
+email=${2?ERROR: No email given}
 
 # Begin sslwrap.sh
 printf "STARTING SCRIPT.\n"
 
 # Refresh
 printf "\nREFRESHING BASHRC...\n"
-source home/user/.bashrc
+source ~/.bashrc
 printf "Done!\n"
-
-# Update Conda
-printf "\nUPDATING CONDA...\n"
-echo y | conda update -n base -c defaults conda
 
 # Check commands
 printf "\nCHECKING COMMANDS..."
@@ -32,23 +30,23 @@ printf "\nNVIDIA-DOCKER\n"
 nvidia-docker
 
 printf "\nNVIDIA CUDA COMPILER\n"
-nvcc -V
+if nvcc -V; then 
+    printf "\n"
+else
+    printf "\nCommand not found. Refreshing ~/.bashrc...\n"
+    source ~/.bashrc
+fi
 
 printf "\nNVIDIA DRIVERS\n"
 nvidia-smi
 
 printf "\nCONDA\n"
-conda
-
-if ! type conda; then 
-    printf "Command not found. Readding path and refreshing ~/.bashrc...";
-    echo ""
-    source ~/.bashrc;
+if conda; then 
+    printf "\n"
+else
+    printf "\nCommand not found. Refreshing ~/.bashrc...\n"
+    source ~/.bashrc
 fi
-
-# Initialize Conda
-printf "\nINITIALIZING CONDA...\n"
-conda init
 
 # Create environment
 printf "\nCREATING ENVIRONMENT CALLED: '$env_name'...\n"
@@ -95,9 +93,13 @@ c.NotebookApp.custom_display_url = 'https://$domain'" >> .jupyter/jupyter_notebo
 printf "\nINSTALLING NGINX...\n"
 sudo apt-get -y install nginx
 
+printf "\nSTARTING NGINX...\n"
+sudo service nginx start
+
 # Install Certbot
 printf "\nINSTALLING CERTBOT...\n"
 sudo add-apt-repository -y ppa:certbot/certbot
+sudo apt-get -y update 
 sudo apt-get -y install python-certbot-nginx
 
 # Allow Nginx HTTPS
@@ -122,6 +124,9 @@ server {
         server_name $domain;
         location / {
             proxy_pass "http://127.0.0.1:8888";
+            proxy_set_header Upgrade "websocket";
+            proxy_set_header Connection "Upgrade";
+            proxy_http_version 1.1;
         }
 
         listen [::]:443 ssl ipv6only=on; # managed by Certbot
@@ -132,12 +137,11 @@ server {
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
     
-# server {
-#        listen 80;
-#        server_name $domain;
-#        return 301 https://$domain$request_uri;
-#}
-" | sudo tee -a /etc/nginx/sites-available/$domain >/dev/null
+server {
+       listen 80;
+       server_name $domain;
+       return 301 https://$domain$request_uri;
+}" | sudo tee -a /etc/nginx/sites-available/$domain >/dev/null
 
 # Copy and delete certain files
 printf "\nEDITING FILES...\n"
