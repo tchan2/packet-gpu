@@ -58,11 +58,11 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 sudo apt-get update
 
 printf "\nINSTALLING NVIDIA DOCKER...\n" 
-sudo apt-get install -y nvidia-docker2
+sudo apt-get install -y nvidia-docker
 sudo pkill -SIGHUP dockerd
 
 printf "\nCHECKING NVIDIA-DOCKER...\n" 
-nvidia-docker
+sudo nvidia-docker
 
 printf "\nINSTALLING CUDA...\n"
 wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_10.1.168-1_amd64.deb
