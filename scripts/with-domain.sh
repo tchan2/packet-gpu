@@ -1,4 +1,4 @@
-#!/bin/bash -ie
+#!/bin/bash -i
 # Please create a domain name on no-ip.com (or any other site you would like to use) and point it to your public IPV4 address. Then, run this script to enable your Jupyter notebook with SSL, and quickly access it through a secure domain name!
 # If you don't wish to access your Jupyter notebook through a SSL-enabled domain name, please run the other script!
 
@@ -8,10 +8,20 @@ request_uri='$request_uri'
 env_name=jupyter_env
 
 # Set your domain name here
-domain=${1?ERROR: No domain given}
+domain=$1
+if [ -z "$1" ]
+  then
+    echo "ERROR: No domain or email given.";
+    exit 1;
+fi
 
 # Set your email here
-email=${2?ERROR: No email given}
+email=$2
+if [ -z "$2" ]
+  then
+    echo "ERROR: No email given.";
+    exit 1;
+fi
 
 # Begin sslwrap.sh
 printf "STARTING SCRIPT.\n"
