@@ -1,12 +1,12 @@
 variable "auth_token" {
   description = "Created through the Packet Portal. Please visit https://support.packet.com/kb/articles/api-integrations for more help on creating API keys."
-  default     = ""
+  default     = " "
   # Please set your authentication token in `default` before running Terraform
 }
 
 variable "project_id" {
   description = "The UUID of your project, that was either created through the Packet Portal, or in your Terraform file."
-  default     = ""
+  default     = " "
   # Please replace the above with your project ID if you have already created it through the Packet Portal.
 }
 

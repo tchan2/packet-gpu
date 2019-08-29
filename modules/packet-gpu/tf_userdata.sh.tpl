@@ -102,4 +102,3 @@ printf "\nCHECKING IF TENSORFLOW CAN DETECT GPU...\n"
 sudo docker run --runtime=nvidia -i --rm tensorflow/tensorflow:latest-gpu python -c "import tensorflow as tf; print(tf.contrib.eager.num_gpus())"
 
 printf "\nCompleted. Script finished.\n"
-

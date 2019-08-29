@@ -1,5 +1,3 @@
-# All variables used here can be changed in the `variables.tf` file.
-
 provider "packet" {
   auth_token = "${var.auth_token}"
   # Please set your authentication token in `variables.tf` before running Terraform

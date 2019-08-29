@@ -18,4 +18,3 @@ resource "packet_device" "tf-gpu" {
 # References a file with script of necessary installations after server is created.
 data "template_file" "tf_userdata" {
   template = "${file("${path.module}/tf_userdata.sh.tpl")}"
-}
