@@ -13,11 +13,11 @@ resource "packet_project" "tf_project" {
 module "packet-gpu" {
   source = "./modules/packet-gpu"
   # If you already have a project_id, please change project_id to:
-  # project_id          = "${var.project_id}"
-  project_id       = "${packet_project.tf_project.id}"
-  hostname         = "${var.hostname}"
-  plan             = "${var.plan}"
-  facility         = "${var.facility}"
-  os               = "${var.os}"
-  billing_cycle    = "${var.billing_cycle}"
+  # project_id    = "${var.project_id}"
+  project_id    = "${packet_project.tf_project.id}"
+  hostname      = "${var.hostname}"
+  plan          = "${var.plan}"
+  facility      = "${var.facility}"
+  os            = "${var.os}"
+  billing_cycle = "${var.billing_cycle}"
 }
