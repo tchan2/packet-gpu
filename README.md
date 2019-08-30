@@ -15,28 +15,27 @@ Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as th
 - Tensorflow-GPU
 - Jupyter
 
+<br />
 
 ## Table of Contents
 1. [Getting Started](#getting-started) 
-2. [Clone The Repository](#clone-the-respository) 
-3. [Initialize Terraform](#initialize-terraform) 
-4. [Set Necessary Variables](#set-necessary-variables) 
+2. [Clone The Repository](#clone-the-repository) 
+3. [Set Necessary Variables](#set-necessary-variables) 
     - [`auth_token`](#auth_token)
     - [`project_id`](#project_id)
         - [If you do not have a project](#if-you-do-not-have-a-project)
         - [If you already have a project](#if-you-already-have-a-project) 
-5. [Initialize Terraform](##initialize-terraform) 
-6. [Deploying the Packet Server](#deploying-the-packet-server)
-7. [Entering Your Server](#entering-your-server)
-8. [Check The Script](#check-the-script)
-9. [Create a Jupyter Notebook Without a Domain Name](#create-a-jupyter-notebook-without-a-domain-name)
-10. [Create a Jupyter Notebook With a Domain Name](#create-a-jupyter-notebook-with-a-domain-name)
-    - [Sign Up](#sign-up)
-    - [Create a Hostname](#create-a-hostname)
-    - [Set Your IP Address](#set-your-ip-address)
-    - [Add Your Hostname](#add-your-hostname)
+4. [Initialize Terraform](#initialize-terraform) 
+5. [Deploying the Packet Server](#deploying-the-packet-server)
+    - [Optional: Use Modules](#optional-use-modules)
+6. [Enter Your Server](#enter-your-server)
+7. [Check The Script](#check-the-script)
+8. [Create a Jupyter Notebook Without a Domain Name](#create-a-jupyter-notebook-without-a-domain-name)
+9. [Create a Jupyter Notebook With a Domain Name](#create-a-jupyter-notebook-with-a-domain-name)
+    - [Create a Domain](#create-a-domain)
     - [Run Script](#run-script)
-11. [Acknowledgments](#acknowledgments)
+    - [Access Your Jupyter Notebook](#access-your-jupyter-notebook)
+10. [Acknowledgments](#acknowledgments)
 
 <br />
 
@@ -86,8 +85,8 @@ variable "auth_token" {
 
 
 ### `project_id`
-### If you do not have a project...
-> If you have already created a project and would like to use it, please skip to the [section below](#if-you-already-have-a-project).
+#### If you do not have a project...
+<i> If you have already created a project and would like to use it, please skip to the [section below](#if-you-already-have-a-project). </i>
 
 As a default, it has been assumed that a project has not been created, so the following block of code in `packet-gpu.tf` creates the `packet_project` resource:
 
@@ -105,14 +104,14 @@ module "packet-gpu" {
     project_id = "${packet_project.<your_project_name>.id}"
 }
 ```
->Please visit the section on [packet_project](https://www.terraform.io/docs/providers/packet/r/project.html) on the Terraform Packet Provider page for more information of other fields you can add to customize your Packet project even further!
+> <i> Please visit the section on [packet_project](https://www.terraform.io/docs/providers/packet/r/project.html) on the Terraform Packet Provider page for more information of other fields you can add to customize your Packet project further. </i>
 
-<i> You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page. </i>
+You may now skip to the [Initialize Terraform](#initialize-terraform) section of this page.
 
 
-### If you already have a project...
+#### If you already have a project...
 
-If you have already created a project in your Packet account and would like to use it, first enter `variables.tf`. (<i>If you came from the `auth-token` section, you should already be here!</i>)
+If you have already created a project in your Packet account and would like to use it, first enter `variables.tf`.
 
 Enter your project ID in `default` field in your variable `project_id`. Your project ID can be found by going into your preferred project, and taking the portion of text after `https://app.packet.net/projects/<YOUR_PROJECT_ID>` in your browser bar.
 
@@ -142,9 +141,7 @@ module "packet-gpu" {
     # project_id          = "${packet_project.tf_project.id}"
 (...)
 ```
-
-<i> After you are done, please continue to the section below. </i>
-
+After you are done, please continue to the section below.
 
 <br />
 
@@ -178,7 +175,7 @@ If you would like to create new devices and reuse your projects without having t
 <details>
   <summary><b>Click to expand</b></summary>
 
-#### Create a Module
+### Create a Module
 To add modules, please create a new module in `packet-gpu.tf` like so:
 ```
 module "module-name" {
@@ -197,7 +194,7 @@ Here, you can choose to manually set your variables here instead of using the de
 
 This will create a new device completely separate from the one(s) you already have, and make it possible for you to create a new device and reuse the project you already have or already created.
 
-#### Update Specific Modules
+### Update Specific Modules
 If you would like to apply changes to your module(s) without affecting the one(s) already created, run `terraform apply` with your target module like so:
 ```
 $ terraform apply -target=module.module-name
@@ -279,10 +276,10 @@ If you do not wish to use No-IP and want to use another site or an already creat
 <details>
   <summary><b>No-IP Guide</b></summary>
 
-#### Sign Up 
+#### 1. Sign Up 
 Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
 
-#### Create a Hostname
+#### 2. Create a Hostname
 In order to create a hostname, please refer to the sidebar to the left.
 
 Click on <i>`My Services`</i>, and then click on <i>`DNS Records`</i>. You will see a button that says <b><i>`Add a Hostname`</i></b>.
@@ -293,10 +290,10 @@ Please set your hostname, and your preferred domain.
 
 Then, for the <i>`Hostname Type`</i>, please set it to <i> `DNS Hostname (A)`</i>. 
 
-#### Set your IP Address
+#### 3. Set your IP Address
 After you have created your domain name, please insert your public IPv4 address into the IP Address field.
 
-#### Add your Hostname
+#### 4. Add your Hostname
 Click on <i> `Add Hostname` </i> and you have successfully created your domain name!
 
 Please allow at least 5-10 minutes for this change to take place, and continue to section [Run Script](#run-script) below.
