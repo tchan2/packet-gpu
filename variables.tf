@@ -5,7 +5,7 @@ variable "auth_token" {
 }
 
 variable "project_id" {
-  description = "The UUID of your project, that was either created through the Packet Portal, or in your Terraform file."
+  description = "The UUID of your project. If you do not have a project already created, please check the README.md for more information."
   default     = " "
   # Please replace the above with your project ID if you have already created it through the Packet Portal.
 }
@@ -22,7 +22,7 @@ variable "plan" {
 
 variable "facility" {
   description = "The facility your Packet server is in. This information can be found in the 'Location' part of your preferred server's details."
-  default     = "dfw2"
+  default     = ["dfw2"]
 }
 
 variable "os" {
