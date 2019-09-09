@@ -6,7 +6,9 @@ echo 'user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
 rsync --archive --chown=user:user ~/.ssh /home/user
 su - user
 
-exec 2> /home/user/stderr.log
+mkdir logs
+
+exec 2> /home/user/logs/stderr.log
 pwd
 
 printf "\nDOWNLOADING ESSENTIALS\n"
