@@ -173,7 +173,9 @@ If all the steps have been completed successfully, a Packet server will have bee
 If you would like to create new devices and reuse your projects without having to continuously create and/or delete them, you can use modules! 
 
 <details>
-  <summary><b>Click to expand</b></summary>
+  <summary>
+      <b>Click to expand</b>
+    </summary>
 
 ### Create a Module
 To add modules, please create a new module in `packet-gpu.tf` like so:
@@ -274,29 +276,34 @@ To check your installations, install necessary packages, and run a SSL-enabled J
 If you do not wish to use No-IP and want to use another site or an already created domain name, please make sure your IP address has been set correctly, and then continue to section [Run Script](#run-script) below. </i>
 
 <details>
-  <summary><b>No-IP Guide</b></summary>
+  <summary>
+      <b>No-IP Guide</b>
+    </summary>
 
 #### 1. Sign Up 
-Please go on [no-ip.com](https://no-ip.com) to create a free domain name! Sign up using your preferred email, and fill out any necessary fields.
+&nbsp;&nbsp;&nbsp;&nbsp;Please go on [no-ip.com](https://no-ip.com) to create a free domain name! 
+
+&nbsp;&nbsp;&nbsp;&nbsp;Sign up using your preferred email, and fill out any necessary fields.
 
 #### 2. Create a Hostname
-In order to create a hostname, please refer to the sidebar to the left.
+&nbsp;&nbsp;&nbsp;&nbsp;In order to create a hostname, please refer to the sidebar to the left.
 
-Click on <i>`My Services`</i>, and then click on <i>`DNS Records`</i>. You will see a button that says <b><i>`Add a Hostname`</i></b>.
+&nbsp;&nbsp;&nbsp;&nbsp;Click on <i>`My Services`</i>, and then click on <i>`DNS Records`</i>. You will see a button that says <b><i>`Add a Hostname`</i></b>.
 
-> If you would like to pay for a domain with no-ip.com, you may click on <b><i>`Domain Registration`</i></b>! 
+&nbsp;&nbsp;&nbsp;&nbsp;(<i><b>Note:</b> If you would like to pay for a domain with no-ip.com, you may click on <b><i>`Domain Registration`</i></b>.</i>)
 
-Please set your hostname, and your preferred domain.
+&nbsp;&nbsp;&nbsp;&nbsp;Please set your hostname, and your preferred domain.
 
-Then, for the <i>`Hostname Type`</i>, please set it to <i> `DNS Hostname (A)`</i>. 
+&nbsp;&nbsp;&nbsp;&nbsp;Then, for the <i>`Hostname Type`</i>, please set it to <i> `DNS Hostname (A)`</i>. 
+
 
 #### 3. Set your IP Address
-After you have created your domain name, please insert your public IPv4 address into the IP Address field.
+&nbsp;&nbsp;&nbsp;&nbsp;After you have created your domain name, please insert your public IPv4 address into the IP Address field.
 
 #### 4. Add your Hostname
-Click on <i> `Add Hostname` </i> and you have successfully created your domain name!
+&nbsp;&nbsp;&nbsp;&nbsp;Click on <i> `Add Hostname` </i> and you have successfully created your domain name!
 
-Please allow at least 5-10 minutes for this change to take place, and continue to section [Run Script](#run-script) below.
+&nbsp;&nbsp;&nbsp;&nbsp;Please allow at least 5-10 minutes for this change to take place, and continue to section [Run Script](#run-script) below.
 
 </details>
 
