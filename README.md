@@ -173,7 +173,7 @@ If all the steps have been completed successfully, a Packet server will have bee
 If you would like to create new devices and reuse your projects without having to continuously create and/or delete them, you can use modules! 
 
 <details>
-  <summary>
+  <summary markdown='span'>
       <b>Click to expand</b>
     </summary>
 
@@ -276,7 +276,7 @@ To check your installations, install necessary packages, and run a SSL-enabled J
 If you do not wish to use No-IP and want to use another site or an already created domain name, please make sure your IP address has been set correctly, and then continue to section [Run Script](#run-script) below. </i>
 
 <details>
-  <summary>
+  <summary markdown='span'>
       <b>No-IP Guide</b>
     </summary>
 
