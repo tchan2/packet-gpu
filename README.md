@@ -27,7 +27,7 @@ Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as th
         - [If you already have a project](#if-you-already-have-a-project) 
 4. [Initialize Terraform](#initialize-terraform) 
 5. [Deploying the Packet Server](#deploying-the-packet-server)
-    - [Optional: Use Modules](#optional-use-modules)
+    - [Optional: Use Modules](#optional--use-modules)
 6. [Enter Your Server](#enter-your-server)
 7. [Check The Script](#check-the-script)
 8. [Create a Jupyter Notebook Without a Domain Name](#create-a-jupyter-notebook-without-a-domain-name)
