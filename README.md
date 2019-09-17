@@ -31,7 +31,7 @@ Please keep in mind that the device created will have <b> Ubuntu 16.04</b> as th
 6. [Enter Your Server](#enter-your-server)
 7. [Check The Script](#check-the-script)
 8. [Create a Jupyter Notebook Without a Domain Name](#create-a-jupyter-notebook-without-a-domain-name)
-9. [Create a Jupyter Notebook With a Domain Name](#create-a-jupyter-notebook-with-a-domain-name)
+9. [Create a Jupyter Notebook With a SSL-Enabled Domain Name](#create-a-jupyter-notebook-with-a-ssl-enabled-domain-name)
     - [Create a Domain](#create-a-domain)
     - [Run Script](#run-script)
     - [Access Your Jupyter Notebook](#access-your-jupyter-notebook)
@@ -238,7 +238,7 @@ at the bottom of the `cloud-init-output` log, the script has been completed.
 
 <br />
 
-## Create a Jupyter Notebook Without A Domain Name
+## Create a Jupyter Notebook without a Domain Name
 To check your installations, install necessary packages, and create an insecure Jupyter notebook without a domain name in a Conda environment, run these commands: 
 
 ```
@@ -264,7 +264,7 @@ Just copy and paste this link into your preferred browser, and begin coding!
 
 <br />
 
-## Create a SSL-Enabled Jupyter Notebook With Domain Name
+## Create a Jupyter Notebook with a SSL-Enabled Domain Name
 To check your installations, install necessary packages, and run a SSL-enabled Jupyter Notebook with a domain name, please continue below.
 
 ### Create a Domain
